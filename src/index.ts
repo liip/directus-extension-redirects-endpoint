@@ -17,8 +17,8 @@ export default defineEndpoint((router, { services }) => {
 		const response: RedirectItem[] =
 			redirects.filter((redirectItem) => {
 				const regex: RegExp = new RegExp(redirectItem.from);
-				return redirectItem.regex && regex.test(req.query.path);
-			});
+        return redirectItem.regex ? regex.test(req.query.path) : redirectItem.from === req.query.path;
+      });
 
 		res.send(response[0]?.to);
 	});
