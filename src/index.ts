@@ -1,7 +1,7 @@
 import { defineEndpoint } from '@directus/extensions-sdk';
 import { RedirectItem } from './types';
 
-const findMatchingRegexRedirects = async (redirectsService, path: string, page = 0): Promise<RedirectItem | undefined> => {
+const findMatchingRegexRedirects = async (redirectsService: any, path: string, page = 0): Promise<RedirectItem | undefined> => {
   const redirectsWithRegex: RedirectItem[] = await redirectsService.readByQuery({
     fields: ['*'],
     filter: { regex: { _eq: true }},
@@ -23,9 +23,9 @@ const findMatchingRegexRedirects = async (redirectsService, path: string, page =
 export default defineEndpoint((router, { services }) => {
   const { ItemsService } = services;
 
-  router.get('/find', async (req, res) => {
+  router.get('/find', async (req: any, res: any) => {
 
-    const redirectsService = new ItemsService(
+    const redirectsService: any = new ItemsService(
       'redirects',
       {
         schema: req.schema,
@@ -33,7 +33,7 @@ export default defineEndpoint((router, { services }) => {
       }
     );
 
-    const exactMatches = await redirectsService.readByQuery({
+    const exactMatches: RedirectItem[] = await redirectsService.readByQuery({
       fields: ['*'],
       filter: {
         regex: { _eq: false },
