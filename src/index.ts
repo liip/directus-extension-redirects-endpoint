@@ -25,6 +25,7 @@ export default defineEndpoint((router, { services }) => {
 
   router.get('/find', async (req: any, res: any) => {
 
+    const path: string = req.query.path;
     const redirectsService: any = new ItemsService(
       'redirects',
       {
@@ -37,14 +38,14 @@ export default defineEndpoint((router, { services }) => {
       fields: ['*'],
       filter: {
         regex: { _eq: false },
-        from: { _eq: req.query.path },
+        from: { _eq: path },
       },
     });
 
     if (exactMatches.length) {
       res.send(exactMatches[0]?.to);
     } else {
-      const regexMatches: RedirectItem | undefined = await findMatchingRegexRedirects(redirectsService, req.query.path);
+      const regexMatches: RedirectItem | undefined = await findMatchingRegexRedirects(redirectsService, path);
       regexMatches ? res.send(regexMatches?.to) : res.send('');
     }
   });
